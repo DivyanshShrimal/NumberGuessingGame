@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess The Number</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Guess The number</h1>
+        <p>Try and Guess a Random Number Between 1 and 100</p>
+        <p>You have 10 attemts to guess the number</p>
+        </br>
+        <form  class="form">
+            <label for="guessField" id="guess">Guess a Number</label>
+            <input type="text" id="guessField" class="guessField">
+            <input type="submit" id="subt" value="Submit Guess" class="subtGuess">
+        </form>
+        <div class="resultpara">
+            <p>Previous Gusses:
+                <span class="gusses"></span>
+            </p>
+            <p>Gusses Remaining:
+                <span class="remaining">10</span>
+            </p>
+            <p class="loworhi"></p>
+        </div>
+    </div>
+</body>
+<script>
+    let num=Math.floor((Math.random()*100)+1)
+    const submit=document.getElementById('subt')
+    const input=document.getElementById('guessField');
+    const loworhi=document.querySelector('.loworhi')
+    const gusses=document.querySelector('.gusses')
+    const remaining=document.querySelector('.remaining')
+
+    let arr=[]
+    let playGame=true
+    let count=1
+    function checkvalid(guess){
+        if(isNaN(guess)){
+            message('enter a valid number');
+        }
+        else if(guess<1){
+            message('enter number greater than or equal to 1')
+        }
+        else if(guess > 100){
+            message('enter number less then or equal to 100')
+        }
+        else{
+            gusses.innerText+=" "+input.value
+            count++;
+            remaining.innerText=`${11-count}`
+            
+            if(guess<num){
+                message("guessed number is too small")
+            }
+            else if(guess>num){
+                message("guessed number is too large")
+            }
+            else {
+                message("You got it Correct")
+                endgame();
+            }
+            if(count>=11){
+                message("Game Over.Click On New Game")
+                endgame();
+            }
+            
+        }
+    }
+    submit.addEventListener('click',(e)=>{
+        e.preventDefault()
+        if(playGame){
+            guess=parseInt(input.value);
+            checkvalid(guess);
+            
+        }
+        else{
+            gusses.innerText=''
+            message('')
+            count=1
+            remaining.innerText=10
+            playGame=true
+            submit.value='Submit Guess';
+
+        }
+        input.value=''
+    })
+function endgame(){
+    playGame=false
+    submit.value='New Game';
+
+}
+    function message(mess){
+        loworhi.innerHTML=mess;
+
+    }
+
+</script>
+</html>
